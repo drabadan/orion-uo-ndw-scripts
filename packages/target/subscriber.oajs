@@ -1,0 +1,39 @@
+//#include ..\helpers\print.oajs
+//#include primary.oajs
+const TARGET_PROVIDER_KEY = 'TARGET_PROVIDER'
+const COMMAND_SET_TARGET = 'TARGET:'
+var TARGET_PROVIDER
+
+const subscribeToTargets = function (config) {
+  Orion.WaitForAddObject('TARGET_PROVIDER')
+  TARGET_PROVIDER = Orion.FindObject('TARGET_PROVIDER')
+  while (!Player.Dead() && Orion.Connected()) {
+    const msg = Orion.InJournal(COMMAND_SET_TARGET, 'guild')
+    if (msg && msg.Serial() === TARGET_PROVIDER.Serial()) {
+      const target = msg
+        .Text()
+        .slice(COMMAND_SET_TARGET.length, msg.Text().length)
+
+      if (target) {
+        // TODO: fix if the primary target has not changed then no propagation
+        // if (
+        //   getPrimaryTarget() &&
+        //   getPrimaryTarget().Serial() === target.Serial()
+        // ) {
+        //   Orion.Wait(config.WAIT_TIMES_MS.SHORT)
+        //   continue
+        // }
+
+        print(MESSAGE_KINDS.WARNING, 'Setting new primary target: ' + target)
+        setPrimaryTarget(target)
+      }
+    }
+    Orion.Wait(config.WAIT_TIMES_MS.MEDIUM)
+  }
+}
+
+const setAndBroadcastMyPrimaryTarget = function (config) {
+  Orion.WaitForAddObject('PRIMARY_TARGET_SERIAL')
+  setPrimaryTarget('PRIMARY_TARGET_SERIAL')
+  Orion.SayGuild(COMMAND_SET_TARGET + getPrimaryTarget().Serial())
+}

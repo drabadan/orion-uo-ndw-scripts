@@ -1,0 +1,14 @@
+const MESSAGE_KINDS = {
+  INFO: 0,
+  WARNING: 1,
+  DANGER: 2,
+}
+
+const print = function (kind, msg) {
+  if (kind === MESSAGE_KINDS.INFO) {
+    return Orion.Print('[INFO] ' + msg)
+  }
+  if (kind === MESSAGE_KINDS.WARNING) {
+    return Orion.Print(0xffa500, '[WARNING] ' + msg)
+  }
+}

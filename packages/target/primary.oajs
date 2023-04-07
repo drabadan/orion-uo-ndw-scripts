@@ -1,0 +1,39 @@
+//#include ..\helpers\print.oajs
+const PRIMARY_TARGET = 'PRIMARY_TARGET'
+
+const setPrimaryTarget = function (serial) {
+  const obj = Orion.FindObject(serial)
+  Shared.AddVar(PRIMARY_TARGET, obj)
+}
+
+const getPrimaryTarget = function () {
+  return Shared.GetVar(PRIMARY_TARGET)
+}
+
+const addPrimaryTarget = function (config) {
+  Orion.WaitForAddObject('PRIMARY_TARGET_SERIAL')
+  setPrimaryTarget('PRIMARY_TARGET_SERIAL')
+}
+
+const runToPrimaryTarget = function (config) {
+  const obj = Shared.GetVar(PRIMARY_TARGET)
+  if (obj.Exists()) {
+    var reached = false
+    while (!reached) {
+      if (obj.Distance() <= 1) {
+        return true
+      }
+
+      Orion.WalkTo(obj.X(), obj.Y(), obj.Z(), 1, 255, true, true, 1000)
+      print(MESSAGE_KINDS.INFO, 'following ' + obj.Serial())
+      Orion.Wait(1)
+    }
+  } else {
+    print(MESSAGE_KINDS.INFO, 'Primary target does not Exist')
+  }
+}
+
+const setAndRunToPrimaryTarget = function (config) {
+  addPrimaryTarget()
+  runToPrimaryTarget()
+}

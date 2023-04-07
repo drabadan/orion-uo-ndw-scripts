@@ -1,0 +1,31 @@
+//#include ..\helpers\print.oajs
+
+const bandageSelfOnce = function (config) {
+  Orion.Print(config)
+  if (Player.Hits() >= config.SKIP_HEAL_VALUE) {
+    return Orion.Print('[INFO] BandageSelf skipped.')
+  }
+  Orion.BandageSelf()
+}
+
+const bandageSelfNoCure = function (config) {
+  if (Player.Poisoned()) {
+    return print(MESSAGE_KINDS.WARNING, 'Poisoned -> Skipping bandageself.')
+  }
+  bandageSelfOnce(config)
+}
+
+const bandageSelfWithCureBottle = function (config) {
+  const bottles = Orion.FindType(0x0f0c, 0x0090)
+  if (Player.Poisoned() && !bottles.length) {
+    return print(MESSAGE_KINDS.DANGER, 'No Cure bottles!!!')
+  }
+
+  if (Player.Poisoned()) {
+    Orion.UseObject(bottles[0])
+    Orion.Wait(config.WAIT_TIMES_MS.SHORT)
+    return bandageSelfOnce(config)
+  }
+
+  bandageSelfNoCure(config)
+}

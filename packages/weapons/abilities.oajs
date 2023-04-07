@@ -1,0 +1,35 @@
+//#include ..\helpers\print.oajs
+const MANA_PER_ABILITY = 65
+const AFTER_POTION_COOLDOWN_MS = 300
+
+const getManaPotion = function () {
+  return Orion.FindType(0x0efc, 0x0486)
+}
+
+/**
+ * Use Weapon ability
+ *
+ * @param ability {String} - 'Primary' or 'Secondary'
+ * @returns
+ */
+const useAbility = function (ability) {
+  if (Player.Mana() > MANA_PER_ABILITY) {
+    return Orion.UseAbility(ability)
+  }
+
+  // Mage potions
+  const bottles = getManaPotion()
+  if (bottles.length) {
+    Orion.UseObject(bottles[0])
+    Orion.Wait(AFTER_POTION_COOLDOWN_MS)
+    return Orion.UseAbility(ability)
+  }
+}
+
+const usePrimaryAbility = function (config) {
+  useAbility('Primary')
+}
+
+const useSecondaryAbility = function (config) {
+  useAbility('Secondary')
+}

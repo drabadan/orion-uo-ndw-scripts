@@ -1,0 +1,20 @@
+//#include ..\helpers\print.oajs
+const equipPrimaryWeapon = function (config) {
+  const spears = Orion.FindType(config.WEAPON.PRIMARY_GRAPHIC)
+  if (spears.length) {
+    Orion.Unequip('RightHand')
+    Orion.Equip(spears[0])
+  } else {
+    print(MESSAGE_KINDS.DANGER, 'No spears found!')
+  }
+}
+
+const equipSecondary = function (config) {
+  const items = Orion.FindType(config.WEAPON.SECONDARY_GRAPHIC)
+  if (items.length) {
+    Orion.Unequip('LeftHand')
+    Orion.Equip(items[0])
+  } else {
+    print(MESSAGE_KINDS.DANGER, 'No Heavy Crossbows found!')
+  }
+}

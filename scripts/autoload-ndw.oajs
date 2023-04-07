@@ -1,0 +1,75 @@
+//#include packages\helpers\print.oajs
+//#include packages\healing\bandages.oajs
+//#include packages\weapons\abilities.oajs
+//#include packages\weapons\equip.oajs
+//#include packages\target\primary.oajs
+//#include packages\target\subscriber.oajs
+
+const CONFIG = {
+  SKIP_HEAL_VALUE: Player.MaxHits(),
+  WAIT_TIMES_MS: {
+    SHORT: 300,
+    MEDIUM: 1000,
+    LONG: 5000,
+  },
+  WEAPON: {
+    PRIMARY_GRAPHIC: 0x13fd,
+    SECONDARY_GRAPHIC: 0x0f63,
+  },
+  TARGET_PROVIDER: undefined,
+}
+
+function EquipSpear() {
+  return equipSecondary(CONFIG)
+}
+
+function EquipHeavyCrossbow() {
+  return equipPrimaryWeapon(CONFIG)
+}
+
+function UsePrimaryAbility() {
+  return usePrimaryAbility(CONFIG)
+}
+function UseSecondaryAbility() {
+  return useSecondaryAbility(CONFIG)
+}
+
+function SubscribeToTargets() {
+  return subscribeToTargets(CONFIG)
+}
+function SetAndBroadcastMyPrimaryTarget() {
+  return setAndBroadcastMyPrimaryTarget(CONFIG)
+}
+
+function BandageSelfOnce() {
+  return bandageSelfOnce(CONFIG)
+}
+function BandageSelfNoCure() {
+  return bandageSelfNoCure(CONFIG)
+}
+function BandageSelfWithCureBottle() {
+  return bandageSelfWithCureBottle(CONFIG)
+}
+
+function RunToPrimaryTarget() {
+  return runToPrimaryTarget(CONFIG)
+}
+
+function AddPrimaryTarget() {
+  return addPrimaryTarget(CONFIG)
+}
+function SetAndRunToPrimaryTarget() {
+  return setAndRunToPrimaryTarget(CONFIG)
+}
+
+function SeekAndAttack() {
+  EquipHeavyCrossbow()
+  SetAndRunToPrimaryTarget()
+  EquipSpear()
+  UseSecondaryAbility()
+  Orion.Attack(getPrimaryTarget().Serial())
+}
+
+function TerminateAll() {
+  Orion.Terminate('all')
+}
